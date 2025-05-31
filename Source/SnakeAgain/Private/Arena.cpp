@@ -7,14 +7,14 @@
 // Sets default values
 AArena::AArena()
 {
-	ConstructorHelpers::FObjectFinder<UStaticMesh>MeshForMesh(TEXT("/SnakeAgain/Material/SM_Arena"));
+	ConstructorHelpers::FObjectFinder<UStaticMesh>MeshForMesh(TEXT("/Game/SnakeAgain/Material/SM_Arena"));
 	if (MeshForMesh.Succeeded())
 	{
 		GetStaticMeshComponent()->SetStaticMesh(MeshForMesh.Object);
 		GetStaticMeshComponent()->SetRelativeScale3D(FVector(1) / MeshForMesh.Object->GetBoundingBox().GetSize());
 	}
 
-	static ConstructorHelpers::FObjectFinder<UMaterial> plane_material(TEXT("/SnakeAgain/Material/M_ArenaGrid"));
+	static ConstructorHelpers::FObjectFinder<UMaterial> plane_material(TEXT("/Game/SnakeAgain/Material/M_ArenaGrid"));
 	if (plane_material.Succeeded())
 	{
 		GetStaticMeshComponent()->SetMaterial(0, plane_material.Object);

@@ -18,6 +18,8 @@ class SNAKEAGAIN_API AGameModeSnake : public AGameModeBase
 
 public:
 	AGameModeSnake();
+
+	bool bIsGodModeEnabled = false;
 	
 	class AArena* Arena;
 
@@ -51,6 +53,9 @@ private:
 	
 	void SpawnArena();
 
+	void CreateGrid();
+
+	void PlacePointOnGrid();
 	//void ViewDebugLines();
 
 public:

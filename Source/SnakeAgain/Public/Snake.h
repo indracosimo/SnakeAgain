@@ -44,8 +44,8 @@ private:
 	UFUNCTION()
 	void MoveSnake();
 
-	void HandleMoveUp(const FInputActionValue& Value);
-	void HandleMoveRight(const FInputActionValue& Value);
+	void MoveUp(const FInputActionValue& Value);
+	void MoveRight(const FInputActionValue& Value);
 
 
 private:

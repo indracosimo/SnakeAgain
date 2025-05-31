@@ -56,8 +56,8 @@ void ASnake::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		EnhancedInputComponent->BindAction(MoveUpAction, ETriggerEvent::Triggered, this, &ASnake::HandleMoveUp);
-		EnhancedInputComponent->BindAction(MoveRightAction, ETriggerEvent::Triggered, this, &ASnake::HandleMoveRight);
+		EnhancedInputComponent->BindAction(MoveUpAction, ETriggerEvent::Triggered, this, &ASnake::MoveUp);
+		EnhancedInputComponent->BindAction(MoveRightAction, ETriggerEvent::Triggered, this, &ASnake::MoveRight);
 	}
 	
 	if (APlayerController* PC = Cast<APlayerController>(GetController()))
@@ -74,7 +74,7 @@ void ASnake::NotifyActorBeginOverlap(AActor* OtherActor)
 	Super::NotifyActorBeginOverlap(OtherActor);
 	if (OtherActor->IsA(ASnakeTail::StaticClass()))
 	{
-		if (GameMode)// && !GameMode->bIsGodModeEnabled)
+		if (GameMode && !GameMode->bIsGodModeEnabled)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Snake overlapped tail"));
 			SetIsAlive(false);
@@ -99,9 +99,22 @@ void ASnake::MoveSnake()
 
 	AddActorWorldOffset(MoveDirection * MoveStepSize );
 	bIsMoving = true;
+
+	//move tail
+	for (int i = 0; i < Tails.Num(); i++)
+	{
+		FVector CurrentLocation = Tails[i]->GetActorLocation();
+		FRotator CurrentRotation = Tails[i]->GetActorRotation();
+
+		Tails[i]->SetActorLocation(OldLocation);
+		Tails[i]->SetActorRotation(OldRotation);
+
+		OldLocation = CurrentLocation;
+		OldRotation = CurrentRotation;
+	}
 }
 
-void ASnake::HandleMoveUp(const FInputActionValue& Value)
+void ASnake::MoveUp(const FInputActionValue& Value)
 {
 	const float AxisValue = Value.Get<float>();
 	if (AxisValue > 0.0f)
@@ -114,7 +127,7 @@ void ASnake::HandleMoveUp(const FInputActionValue& Value)
 	}
 }
 
-void ASnake::HandleMoveRight(const FInputActionValue& Value)
+void ASnake::MoveRight(const FInputActionValue& Value)
 {
 	const float AxisValue = Value.Get<float>();
 	if (AxisValue > 0.0f)

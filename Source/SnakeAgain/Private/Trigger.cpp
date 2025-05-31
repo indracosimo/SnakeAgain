@@ -39,7 +39,7 @@ void ATrigger::NotifyActorBeginOverlap(AActor* OtherActor)
 	ASnake* OverlappedActorAsSnake = Cast<ASnake>(OtherActor);
 	if (OverlappedActorAsSnake)
 	{
-		OverlapedWithSnakeHead(OverlappedActorAsSnake);
+		OverlappedWithSnakeHead(OverlappedActorAsSnake);
 	}
 }
 

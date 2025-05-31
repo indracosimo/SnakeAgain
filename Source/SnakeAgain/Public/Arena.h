@@ -14,7 +14,7 @@ class SNAKEAGAIN_API AArena : public AStaticMeshActor
 public:
 	AArena();
 	void BeginPlay() override;
-	//void GetRandomFruitSpawnLocation(FVector& OutLocation);
+	//void GetRandomFoodSpawnLocation(FVector& OutLocation);
 
 private:
 	//void SpawnWall(FVector SpawnLocation, FVector SpawnScale);

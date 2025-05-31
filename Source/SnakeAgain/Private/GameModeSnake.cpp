@@ -17,12 +17,12 @@ AGameModeSnake::AGameModeSnake()
 
 //	bViewDebugLines = false;
 
-	ArenaHeight = 1500;
-	ArenaWidth = 1700;
+	ArenaHeight = 2000;
+	ArenaWidth = 2000;
 
 	SquareWidth = 100.f;
 
-	ArenaSpawnCenter = FVector(50, -50, 0);
+	ArenaSpawnCenter = FVector(50, -50, 250);
 
 	// Camera Location
 	CameraHeight = ArenaHeight * 1.2;
@@ -36,7 +36,7 @@ void AGameModeSnake::StartPlay()
 	
 	SpawnCamera();
 	SpawnArena();
-	
+	SpawnFood();
 }
 
 void AGameModeSnake::SpawnCamera()
@@ -60,6 +60,71 @@ void AGameModeSnake::SpawnArena()
 	//ViewDebugLines();
 }
 
+
+
+FVector AGameModeSnake::GetBottomPoint() const
+{
+	return FVector(-(ArenaHeight / 2), -(ArenaWidth / 2), 1) + ArenaSpawnCenter;
+}
+
+void AGameModeSnake::SpawnFood()
+{
+	const float GridHeight = 0.0f;
+
+	FVector TopLeft = GetBottomPoint();
+
+	float SpawnX = FMath::RandRange(0, ArenaHeight /100 - 1);
+	float SpawnY = FMath::RandRange(0, ArenaWidth /100 - 1);
+	float SpawnYaw = FMath::FRandRange(0.f, 360.f);
+	
+	FVector UpperLeft = TopLeft + FVector(SpawnX * SquareWidth, SpawnY * SquareWidth, GridHeight);
+	FVector LowerRight = TopLeft + FVector(SpawnX * SquareWidth + SquareWidth, SpawnY * SquareWidth + SquareWidth, GridHeight);
+	
+	FVector SpawnLocation = FVector(((UpperLeft.X + LowerRight.X) / 2.0f), ((UpperLeft.Y + LowerRight.Y) / 2.0f), 5.0f);
+	FRotator SpawnRotation = FRotator(0.0f, SpawnYaw, 0.0f);
+
+	GetWorld()->SpawnActor<AFood>(FoodClass, SpawnLocation, SpawnRotation, FActorSpawnParameters());
+}
+
+void AGameModeSnake::CreateGrid()
+{
+	FVector TopLeft = GetBottomPoint();
+	float GridHighet = 1.f;
+
+	for (int32 i = 0; i < ArenaHeight /100 + 1; i++)
+	{
+		FVector Start = TopLeft + FVector(i * SquareWidth, 0.f, GridHighet);
+		FVector End = Start + FVector(0.f, ArenaWidth, GridHighet);
+		DrawDebugLine(GetWorld(), Start, End, FColor::Green, true);
+	}
+
+	for (int32 i = 0; i < ArenaWidth /100 + 1; i++)
+	{
+		FVector Start = TopLeft + FVector(0.f, i * SquareWidth, GridHighet);
+		FVector End = Start + FVector(ArenaHeight, 0.f, GridHighet);
+		DrawDebugLine(GetWorld(), Start, End, FColor::Green, true);
+	}
+}
+
+void AGameModeSnake::PlacePointOnGrid()
+{
+	float GridHighet = 1.f;
+
+	FVector TopLeft = GetBottomPoint();
+
+	for (int32 i = 0; i < ArenaHeight/100; i++)
+	{
+		for (int32 j = 0; j < ArenaWidth/100; j++)
+		{
+			FVector UpperLeft = TopLeft + FVector(i * SquareWidth, j * SquareWidth, GridHighet);
+			FVector LowerRight = TopLeft + FVector(i * SquareWidth + SquareWidth, j * SquareWidth + SquareWidth, GridHighet);
+			FVector RandomPointInSquare = FVector(((UpperLeft.X + LowerRight.X) / 2.0f), ((UpperLeft.Y + LowerRight.Y) / 2.0f), 5.0f);
+			DrawDebugPoint(GetWorld(), RandomPointInSquare, 5.f, FColor::Orange, true);
+			DrawDebugCircle(GetWorld(), RandomPointInSquare, 25.f, 48, FColor::Purple, true, -1.f, 0, 2.5f, FVector(0.f, 1.f, 0.f), FVector(1.f, 0.f, 0.f), true);
+		}
+	}
+}
+
 void AGameModeSnake::OnSnakeOverlapFood()
 {
 	ASnake* Snake = Cast<ASnake>(GetWorld()->GetFirstPlayerController()->GetPawn());
@@ -69,29 +134,5 @@ void AGameModeSnake::OnSnakeOverlapFood()
 		Snake->SpawnTail();
 		SpawnFood();
 	}
-}
-
-void AGameModeSnake::SpawnFood()
-{
-	const float GridHighet = 0.0f;
-
-	FVector TopLeft = GetBottomPoint();
-	
-	float SpawnX = FMath::RandRange(0, ArenaHeight /100 - 1);
-	float SpawnY = FMath::RandRange(0, ArenaWidth /100 - 1);
-	float SpawnYaw = FMath::FRandRange(0.f, 360.f);
-	
-	FVector UpperLeft = TopLeft + FVector(SpawnX * SquareWidth, SpawnY * SquareWidth, GridHighet);
-	FVector LowerRight = TopLeft + FVector(SpawnX * SquareWidth + SquareWidth, SpawnY * SquareWidth + SquareWidth, GridHighet);
-	
-	FVector SpawnLocation = FVector(((UpperLeft.X + LowerRight.X) / 2.0f), ((UpperLeft.Y + LowerRight.Y) / 2.0f), 5.0f);
-	FRotator SpawnRotation = FRotator(0.0f, SpawnYaw, 0.0f);
-
-	GetWorld()->SpawnActor<AFood>(FoodClass, SpawnLocation, SpawnRotation, FActorSpawnParameters());
-}
-
-FVector AGameModeSnake::GetBottomPoint() const
-{
-	return FVector(-(ArenaHeight / 2), -(ArenaWidth / 2), 1) + ArenaSpawnCenter;
 }
 

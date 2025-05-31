@@ -29,8 +29,8 @@ public:
 
 	
 public:
-	void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
 private:
-	virtual void OverlapedWithSnakeHead(class ASnake* Snake) PURE_VIRTUAL(ATrigerable::OverlapedWithSnakeHead);
+	virtual void OverlappedWithSnakeHead(class ASnake* Snake) PURE_VIRTUAL(ATrigger::OverlappedWithSnakeHead);
 };
