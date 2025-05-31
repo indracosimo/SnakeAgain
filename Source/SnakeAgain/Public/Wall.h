@@ -15,4 +15,8 @@ class SNAKEAGAIN_API AWall : public ADeadZone
 	GENERATED_BODY()
 public:
 	AWall();
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Appearance")
+	class UMaterialInterface* WallMaterial;
+
 };

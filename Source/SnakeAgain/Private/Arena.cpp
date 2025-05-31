@@ -69,7 +69,7 @@ void AArena::GetRandomFoodSpawnLocation(FVector& OutLocation)
 	FVector Extend;
 	GetActorBounds(false, Origin, Extend);
 
-	float SpawnZ = Origin.Z + Extend.Z / 2;
+	float SpawnZ = Origin.Z + Extend.Z;
 	float SpawnX = FMath::RandRange(Origin.X - Extend.X + WallWidth, Origin.X + Extend.X - WallWidth);
 	float SpawnY = FMath::RandRange(Origin.Y - Extend.Y + WallWidth, Origin.Y + Extend.Y - WallWidth);
 

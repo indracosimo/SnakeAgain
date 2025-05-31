@@ -5,16 +5,24 @@
 
 AWall::AWall()
 {
-	ConstructorHelpers::FObjectFinder<UStaticMesh>MeshForMesh(TEXT("/SnakeAgain/Material/SM_Arena"));
+	ConstructorHelpers::FObjectFinder<UStaticMesh>MeshForMesh(TEXT("/Game/SnakeAgain/Material/SM_Arena"));
 	if (MeshForMesh.Succeeded())
 	{
 		Mesh->SetStaticMesh(MeshForMesh.Object);
 		Mesh->SetRelativeScale3D(FVector(1) / MeshForMesh.Object->GetBoundingBox().GetSize());
 	}
 
-	static ConstructorHelpers::FObjectFinder<UMaterial> plane_material(TEXT("/SnakeAgain/Material/M_Wall"));
-	if (plane_material.Succeeded())
+
+	static ConstructorHelpers::FObjectFinder<UMaterial> DefaultMaterial(TEXT("/Game/SnakeAgain/Material/M_Wall"));
+	if (DefaultMaterial.Succeeded())
 	{
-		Mesh->SetMaterial(0, plane_material.Object);
+		WallMaterial = DefaultMaterial.Object;
 	}
+
+
+	if (WallMaterial)
+	{
+		Mesh->SetMaterial(0, WallMaterial);
+	}
+
 }
