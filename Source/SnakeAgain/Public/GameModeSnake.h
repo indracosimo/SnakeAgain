@@ -31,11 +31,11 @@ public:
 	float SquareWidth;
 	UPROPERTY(EditDefaultsOnly, Category = "Arena settings")
 	float CameraHeight;
-
+	UPROPERTY(EditDefaultsOnly, Category = "Arena settings")
 	FVector ArenaSpawnCenter;
-
+	UPROPERTY(EditDefaultsOnly, Category = "Arena settings")
 	FVector CameraSpawnLocation;
-
+	UPROPERTY(EditDefaultsOnly, Category = "Arena settings")
 	FRotator CameraSpawnRotation;
 
 private:

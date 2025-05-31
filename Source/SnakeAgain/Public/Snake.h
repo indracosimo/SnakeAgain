@@ -57,31 +57,30 @@ private:
 	class UStaticMeshComponent* HeadMesh;
 
 private:
-	// Defaults
+	
 	UPROPERTY(EditDefaultsOnly, Category = Mesh)
 	TSubclassOf<class ASnakeTail> DefaultTailClass;
 
-private:
-	// Snake tail array
 	TArray<class ASnakeTail*> Tails;
 
 public:
-	// Snake tail methods
 	void SpawnTail();
 
 private:
 	class AGameModeSnake* GameMode = nullptr;
 	
 private:
-	// Conditions
+	
 	bool bIsAlive;
-
 	bool bIsMoving;
+
+
+
 
 public:
 	// Conditions methods
 	void SetIsAlive(bool inBIsAlive);
-
+	
 
 
 };

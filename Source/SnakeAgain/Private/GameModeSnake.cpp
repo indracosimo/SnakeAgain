@@ -69,7 +69,7 @@ FVector AGameModeSnake::GetBottomPoint() const
 
 void AGameModeSnake::SpawnFood()
 {
-	const float GridHeight = 0.0f;
+	const float GridHeight = ArenaSpawnCenter.Z;
 
 	FVector TopLeft = GetBottomPoint();
 
@@ -80,7 +80,7 @@ void AGameModeSnake::SpawnFood()
 	FVector UpperLeft = TopLeft + FVector(SpawnX * SquareWidth, SpawnY * SquareWidth, GridHeight);
 	FVector LowerRight = TopLeft + FVector(SpawnX * SquareWidth + SquareWidth, SpawnY * SquareWidth + SquareWidth, GridHeight);
 	
-	FVector SpawnLocation = FVector(((UpperLeft.X + LowerRight.X) / 2.0f), ((UpperLeft.Y + LowerRight.Y) / 2.0f), 5.0f);
+	FVector SpawnLocation = FVector(((UpperLeft.X + LowerRight.X) / 2.0f), ((UpperLeft.Y + LowerRight.Y) / 2.0f), GridHeight);
 	FRotator SpawnRotation = FRotator(0.0f, SpawnYaw, 0.0f);
 
 	GetWorld()->SpawnActor<AFood>(FoodClass, SpawnLocation, SpawnRotation, FActorSpawnParameters());
@@ -89,26 +89,26 @@ void AGameModeSnake::SpawnFood()
 void AGameModeSnake::CreateGrid()
 {
 	FVector TopLeft = GetBottomPoint();
-	float GridHighet = 1.f;
+	float GridHeight = 1.f;
 
 	for (int32 i = 0; i < ArenaHeight /100 + 1; i++)
 	{
-		FVector Start = TopLeft + FVector(i * SquareWidth, 0.f, GridHighet);
-		FVector End = Start + FVector(0.f, ArenaWidth, GridHighet);
+		FVector Start = TopLeft + FVector(i * SquareWidth, 0.f, GridHeight);
+		FVector End = Start + FVector(0.f, ArenaWidth, GridHeight);
 		DrawDebugLine(GetWorld(), Start, End, FColor::Green, true);
 	}
 
 	for (int32 i = 0; i < ArenaWidth /100 + 1; i++)
 	{
-		FVector Start = TopLeft + FVector(0.f, i * SquareWidth, GridHighet);
-		FVector End = Start + FVector(ArenaHeight, 0.f, GridHighet);
+		FVector Start = TopLeft + FVector(0.f, i * SquareWidth, GridHeight);
+		FVector End = Start + FVector(ArenaHeight, 0.f, GridHeight);
 		DrawDebugLine(GetWorld(), Start, End, FColor::Green, true);
 	}
 }
 
 void AGameModeSnake::PlacePointOnGrid()
 {
-	float GridHighet = 1.f;
+	float GridHeight = 1.f;
 
 	FVector TopLeft = GetBottomPoint();
 
@@ -116,8 +116,8 @@ void AGameModeSnake::PlacePointOnGrid()
 	{
 		for (int32 j = 0; j < ArenaWidth/100; j++)
 		{
-			FVector UpperLeft = TopLeft + FVector(i * SquareWidth, j * SquareWidth, GridHighet);
-			FVector LowerRight = TopLeft + FVector(i * SquareWidth + SquareWidth, j * SquareWidth + SquareWidth, GridHighet);
+			FVector UpperLeft = TopLeft + FVector(i * SquareWidth, j * SquareWidth, GridHeight);
+			FVector LowerRight = TopLeft + FVector(i * SquareWidth + SquareWidth, j * SquareWidth + SquareWidth, GridHeight);
 			FVector RandomPointInSquare = FVector(((UpperLeft.X + LowerRight.X) / 2.0f), ((UpperLeft.Y + LowerRight.Y) / 2.0f), 5.0f);
 			DrawDebugPoint(GetWorld(), RandomPointInSquare, 5.f, FColor::Orange, true);
 			DrawDebugCircle(GetWorld(), RandomPointInSquare, 25.f, 48, FColor::Purple, true, -1.f, 0, 2.5f, FVector(0.f, 1.f, 0.f), FVector(1.f, 0.f, 0.f), true);

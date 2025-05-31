@@ -2,6 +2,7 @@
 
 
 #include "SnakeAgain/Public/Arena.h"
+#include "SnakeAgain/Public/Wall.h"
 
 
 // Sets default values
@@ -37,27 +38,41 @@ void AArena::BeginPlay()
 
 	FVector LeftWallLoc = Origin - FVector(Extend.X + WallWidth / 2, 0, 0);
 	FVector VerticalWallScale = FVector(WallWidth, Extend.Y * 2 , WallHeight);
-//	SpawnWall(LeftWallLoc, VerticalWallScale);
-//
-//	FVector RightWallLoc = Origin + FVector(Extend.X + WallWidth / 2, 0, 0);
-//	SpawnWall(RightWallLoc, VerticalWallScale);
-//
-//
-//	FVector UpWallLoc = Origin + FVector(0, Extend.Y + WallWidth / 2, 0);
-//	FVector HorizontalWallScale = FVector(Extend.X * 2 + WallWidth * 2, WallWidth, WallHeight);
-//	SpawnWall(UpWallLoc, HorizontalWallScale);
-//
-//	FVector DownWallLoc = Origin - FVector(0, Extend.Y + WallWidth / 2, 0);
-//	SpawnWall(DownWallLoc, HorizontalWallScale);
+	SpawnWall(LeftWallLoc, VerticalWallScale);
+
+	FVector RightWallLoc = Origin + FVector(Extend.X + WallWidth / 2, 0, 0);
+	SpawnWall(RightWallLoc, VerticalWallScale);
+
+
+	FVector UpWallLoc = Origin + FVector(0, Extend.Y + WallWidth / 2, 0);
+	FVector HorizontalWallScale = FVector(Extend.X * 2 + WallWidth * 2, WallWidth, WallHeight);
+	SpawnWall(UpWallLoc, HorizontalWallScale);
+
+	FVector DownWallLoc = Origin - FVector(0, Extend.Y + WallWidth / 2, 0);
+	SpawnWall(DownWallLoc, HorizontalWallScale);
 }
 
-//void AArena::SpawnWall(FVector SpawnLocation, FVector SpawnScale)
-//{
-//	FTransform SpawnTransform = FTransform(FRotator(), SpawnLocation, SpawnScale);
-//
-//	FActorSpawnParameters SpawnParams;
-//	SpawnParams.Owner = this;
-//	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-//
-//	AWall* SpawnedWall = GetWorld()->SpawnActor<AWall>(AWall::StaticClass(), SpawnTransform, SpawnParams);
-//}
+void AArena::SpawnWall(FVector SpawnLocation, FVector SpawnScale)
+{
+	FTransform SpawnTransform = FTransform(FRotator(), SpawnLocation, SpawnScale);
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	AWall* SpawnedWall = GetWorld()->SpawnActor<AWall>(AWall::StaticClass(), SpawnTransform, SpawnParams);
+}
+
+void AArena::GetRandomFoodSpawnLocation(FVector& OutLocation)
+{
+	FVector Origin;
+	FVector Extend;
+	GetActorBounds(false, Origin, Extend);
+
+	float SpawnZ = Origin.Z + Extend.Z / 2;
+	float SpawnX = FMath::RandRange(Origin.X - Extend.X + WallWidth, Origin.X + Extend.X - WallWidth);
+	float SpawnY = FMath::RandRange(Origin.Y - Extend.Y + WallWidth, Origin.Y + Extend.Y - WallWidth);
+
+	OutLocation = FVector(SpawnX, SpawnY, SpawnZ);
+}
+
