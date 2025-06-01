@@ -25,6 +25,13 @@ public:
 
 	virtual void BeginPlay() override;
 
+	void ToggleGameOverMenu();
+
+	void ClearScore();
+
+private:
+	class AGameHud* GameHud = nullptr;
+
 public:
 	bool bIsGodModeEnabled = false;
 };

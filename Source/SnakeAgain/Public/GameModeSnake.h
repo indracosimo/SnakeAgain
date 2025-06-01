@@ -38,6 +38,18 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Arena settings")
 	FRotator CameraSpawnRotation;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Spawn settings")
+	FVector PlayerSpawnLocation;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Spawn settings")
+	int32 FoodSpawnRangeX;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Spawn settings")
+	int32 FoodSpawnRangeY;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Spawn settings")
+	int32 FoodSpawnRangeZ;
+	
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Arena")
 	TSubclassOf<class AArena> ArenaClass;
@@ -45,6 +57,11 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Food")
 	TSubclassOf<class AFood> FoodClass;
 
+private:
+	int Score;
+
+	int HighScore;
+	
 protected:
 	virtual void StartPlay() override;
 
@@ -56,6 +73,10 @@ private:
 	void CreateGrid();
 
 	void PlacePointOnGrid();
+
+	void UpdateHUD();
+
+	void IncreaseScore();
 	//void ViewDebugLines();
 
 public:
@@ -63,5 +84,7 @@ public:
 
 	void SpawnFood();
 
+	void GameOver();
+	
 	FVector GetBottomPoint() const;
 };

@@ -6,13 +6,14 @@
 #include "SnakeAgain/Public/Food.h"
 #include "SnakeAgain/Public/Arena.h"
 #include "Kismet/GameplayStatics.h"
+#include "SnakeAgain/Public/GameHud.h"
 #include "Camera/CameraActor.h"
 #include "SnakeAgain/Public/SnakePlayerController.h"
 
 AGameModeSnake::AGameModeSnake()
 {
 	DefaultPawnClass = ASnake::StaticClass();
-	//HUDClass = ASnakeHud::StaticClass();
+	HUDClass = AGameHud::StaticClass();
 	PlayerControllerClass = ASnakePlayerController::StaticClass();
 
 //	bViewDebugLines = false;
@@ -86,6 +87,17 @@ void AGameModeSnake::SpawnFood()
 	GetWorld()->SpawnActor<AFood>(FoodClass, SpawnLocation, SpawnRotation, FActorSpawnParameters());
 }
 
+void AGameModeSnake::GameOver()
+{
+	Arena->GetStaticMeshComponent()->SetVisibility(false);
+	ASnakePlayerController* SnakePlayerController = Cast<ASnakePlayerController>(GetWorld()->GetFirstPlayerController());
+
+	if (SnakePlayerController) 
+	{
+		SnakePlayerController->ToggleGameOverMenu();
+	}
+}
+
 void AGameModeSnake::CreateGrid()
 {
 	FVector TopLeft = GetBottomPoint();
@@ -125,6 +137,28 @@ void AGameModeSnake::PlacePointOnGrid()
 	}
 }
 
+void AGameModeSnake::UpdateHUD()
+{
+	AGameHud* SnakeHud = Cast<AGameHud>(GetWorld()->GetFirstPlayerController()->GetHUD());
+
+	if (SnakeHud)
+	{
+		SnakeHud->UpdateCurrentScore(Score);
+
+		if (Score > HighScore)
+		{
+			HighScore = Score;
+			SnakeHud->UpdateHighScore(HighScore);
+			//SaveGame();
+		}
+	}
+}
+
+void AGameModeSnake::IncreaseScore()
+{
+	Score++;
+}
+
 void AGameModeSnake::OnSnakeOverlapFood()
 {
 	ASnake* Snake = Cast<ASnake>(GetWorld()->GetFirstPlayerController()->GetPawn());
@@ -132,6 +166,8 @@ void AGameModeSnake::OnSnakeOverlapFood()
 	if (Snake)
 	{
 		Snake->SpawnTail();
+		IncreaseScore(); 
+		UpdateHUD(); 
 		SpawnFood();
 	}
 }

@@ -12,6 +12,7 @@ void ADeadZone::OverlappedWithSnakeHead(class ASnake* Snake)
 	if (GameMode && !GameMode->bIsGodModeEnabled)
 	{
 		Snake->SetIsAlive(false);
+		GameMode->GameOver();
 	}
 	
 }

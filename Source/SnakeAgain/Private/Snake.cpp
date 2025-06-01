@@ -79,7 +79,7 @@ void ASnake::NotifyActorBeginOverlap(AActor* OtherActor)
 			UE_LOG(LogTemp, Warning, TEXT("Snake overlapped tail"));
 			SetIsAlive(false);
 			//GameMode->StopPlayingMusic();
-			//GameMode->GameOver();
+			GameMode->GameOver();
 		}
 	}
 }
