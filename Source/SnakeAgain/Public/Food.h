@@ -16,6 +16,7 @@ class SNAKEAGAIN_API AFood : public ATrigger
 public:
 	AFood();
 
+	
 	virtual void OverlappedWithSnakeHead(class ASnake* Snake) override;
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 	
