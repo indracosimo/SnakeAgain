@@ -2,10 +2,13 @@
 
 
 #include "SnakeAgain/Public/GameModeSnake.h"
+
+#include "UGameDataSubsystem.h"
 #include "SnakeAgain/Public/Snake.h"
 #include "SnakeAgain/Public/Food.h"
 #include "SnakeAgain/Public/Arena.h"
 #include "Kismet/GameplayStatics.h"
+#include "Blueprint/UserWidget.h"
 #include "SnakeAgain/Public/GameHud.h"
 #include "Camera/CameraActor.h"
 #include "SnakeAgain/Public/SnakePlayerController.h"
@@ -38,6 +41,32 @@ void AGameModeSnake::StartPlay()
 	SpawnCamera();
 	SpawnArena();
 	SpawnFood();
+}
+
+void AGameModeSnake::BeginPlay()
+{
+	Super::BeginPlay();
+
+	//UUGameDataSubsystem*
+	
+//	GameSubSys = GetWorld()->GetSubsystem<UUGameDataSubsystem>();
+	if (MainMenuWidgetClass)
+	{
+		UUserWidget* MenuWidget = CreateWidget<UUserWidget>(GetWorld(), MainMenuWidgetClass);
+		if (MenuWidget)
+		{
+			MenuWidget->AddToViewport();
+			
+			if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
+			{
+				FInputModeUIOnly InputMode;
+				InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+				InputMode.SetWidgetToFocus(MenuWidget->TakeWidget());
+				PlayerController->SetInputMode(InputMode);
+			}
+		}
+	}
+
 }
 
 void AGameModeSnake::SpawnCamera()

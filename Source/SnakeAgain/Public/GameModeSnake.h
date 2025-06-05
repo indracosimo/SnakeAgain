@@ -57,6 +57,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Food")
 	TSubclassOf<class AFood> FoodClass;
 
+	//UPROPERTY(EditDefaultsOnly, Category = "GameData")
+	//UUGameDataSubsystem* GameSubSys = GetWorld()->GetSubsystem<UUGameDataSubsystem>();
+
 private:
 	int Score;
 
@@ -64,6 +67,8 @@ private:
 	
 protected:
 	virtual void StartPlay() override;
+
+	virtual void BeginPlay() override;
 
 private:
 	void SpawnCamera();
@@ -87,4 +92,9 @@ public:
 	void GameOver();
 	
 	FVector GetBottomPoint() const;
+
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widgets")
+	TSubclassOf<UUserWidget> MainMenuWidgetClass;
+
 };

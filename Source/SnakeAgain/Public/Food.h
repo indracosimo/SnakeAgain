@@ -16,8 +16,9 @@ class SNAKEAGAIN_API AFood : public ATrigger
 public:
 	AFood();
 
-	
+	UFUNCTION(BlueprintCallable, Category = "Food")
 	virtual void OverlappedWithSnakeHead(class ASnake* Snake) override;
+	UFUNCTION(BlueprintCallable, Category = "Food")
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 	
 
