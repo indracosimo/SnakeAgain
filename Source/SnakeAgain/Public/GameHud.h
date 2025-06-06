@@ -16,6 +16,8 @@ class SNAKEAGAIN_API AGameHud : public AHUD
 
 public:
 	virtual void DrawHUD() override;
+		
+	void CreateSnakeWidget();
 	virtual void Tick(float DeltaSeconds) override;
 
 protected:
@@ -29,15 +31,20 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 	TSubclassOf<class UUserWidget> GameOverWidgetClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
+	TSubclassOf<class UUserWidget> MainMenuWidgetClass;
+
 private:
 
 	class USnakeWidget* SnakeWidget = nullptr;
 
 	class UGameOver* GameOverWidget = nullptr;
 
+	class UMainMenu* MainMenuWidget = nullptr;
+
 private:
 	
-	void CreateSnakeWidget();
+//	void CreateSnakeWidget();
 
 	//void CreatePauseMenuWidget();
 
@@ -51,4 +58,7 @@ public:
 
 	UFUNCTION()
 	void ShowGameOverWidget();
+
+	UFUNCTION()
+	void ShowMainMenuWidget();
 };

@@ -15,6 +15,9 @@ class SNAKEAGAIN_API UMainMenu : public UUserWidget
 	GENERATED_BODY()
 
 public:
+
+	virtual void NativeConstruct() override;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UButton* StartButton;
 	
