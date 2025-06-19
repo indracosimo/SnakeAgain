@@ -2,6 +2,8 @@
 
 
 #include "SnakeAgain/Public/Snake.h"
+
+#include "Kismet/GameplayStatics.h"
 #include "SnakeAgain/Public/GameModeSnake.h"
 #include "SnakeAgain/Public/SnakeTail.h"
 
@@ -35,11 +37,19 @@ ASnake::ASnake()
 void ASnake::BeginPlay()
 {
 	Super::BeginPlay();
-
+	UE_LOG(LogTemp, Warning, TEXT("Snake spawned: %s"), *GetName());
 	GameMode = Cast<AGameModeSnake>(GetWorld()->GetAuthGameMode());
 	check(GameMode);
 
-	MoveStepSize = HeadMesh->GetStaticMesh()->GetBoundingBox().GetSize().X;
+	if (HeadMesh && HeadMesh->GetStaticMesh())
+	{
+		MoveStepSize = HeadMesh->GetStaticMesh()->GetBoundingBox().GetSize().X;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("HeadMesh"));
+		MoveStepSize = 50.0f;
+	}
 
 	// Looping timer for the snake movement
 	FTimerHandle TimerHandle_AttackDelay;
@@ -62,10 +72,17 @@ void ASnake::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	
 	if (APlayerController* PC = Cast<APlayerController>(GetController()))
 	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
+		int32 PlayerIndex = UGameplayStatics::GetPlayerControllerID(PC);
+		auto* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer());
+
+		if (Subsystem)
 		{
-			Subsystem->AddMappingContext(DefaultMappingContext, 0);
+			if (PlayerIndex == 0)
+				Subsystem->AddMappingContext(DefaultMappingContext, 0);
+			else
+				Subsystem->AddMappingContext(P2MappingContext, 0); 
 		}
+	
 	}
 }
 

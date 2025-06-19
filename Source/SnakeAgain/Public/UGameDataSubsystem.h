@@ -22,6 +22,8 @@ public:
 	bool bVsAI = false;
 
 	UFUNCTION(BlueprintCallable, Category = "GameData")
+	bool IsTwoPlayer();
+	UFUNCTION(BlueprintCallable, Category = "GameData")
 	void SetTwoPlayer(bool bNewTwoPlayer);
 
 	UFUNCTION(BlueprintCallable, Category = "GameData")

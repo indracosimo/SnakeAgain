@@ -20,7 +20,7 @@ public:
 	AGameModeSnake();
 
 	bool bIsGodModeEnabled = false;
-	
+	int32 PlayerIndex;
 	class AArena* Arena;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Arena settings")
@@ -86,7 +86,7 @@ private:
 
 public:
 	void OnSnakeOverlapFood();
-
+	void SpawnSnake(int32 PlayerIndex);
 	void SpawnFood();
 
 	void GameOver();

@@ -15,7 +15,7 @@
 
 AGameModeSnake::AGameModeSnake()
 {
-	DefaultPawnClass = ASnake::StaticClass();
+	DefaultPawnClass = nullptr; //ASnake::StaticClass();
 	HUDClass = AGameHud::StaticClass();
 	PlayerControllerClass = ASnakePlayerController::StaticClass();
 
@@ -41,8 +41,33 @@ void AGameModeSnake::StartPlay()
 	SpawnCamera();
 	SpawnArena();
 	SpawnFood();
-}
 
+	if (UUGameDataSubsystem* GameSubSys = GetGameInstance()->GetSubsystem<UUGameDataSubsystem>())
+	{
+		SpawnSnake(0);
+
+		if (GameSubSys->IsTwoPlayer())
+		{
+			SpawnSnake(1);
+		}
+	}
+}
+void AGameModeSnake::SpawnSnake(int32 InPlayerIndex )
+{
+	FVector SpawnOffset = FVector(0, InPlayerIndex == 0 ? -200 : 200, 250);
+	FVector SpawnLocation = ArenaSpawnCenter + SpawnOffset;
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	ASnake* NewSnake = GetWorld()->SpawnActor<ASnake>(ASnake::StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnParams);
+
+	APlayerController* PC = UGameplayStatics::CreatePlayer(GetWorld(), PlayerIndex, true);
+	if (PC && NewSnake)
+	{
+		PC->Possess(NewSnake);
+	}
+}
 void AGameModeSnake::BeginPlay()
 {
 	Super::BeginPlay();
@@ -200,4 +225,6 @@ void AGameModeSnake::OnSnakeOverlapFood()
 		SpawnFood();
 	}
 }
+
+
 

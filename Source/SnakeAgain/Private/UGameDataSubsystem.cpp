@@ -3,6 +3,11 @@
 
 #include "UGameDataSubsystem.h"
 
+bool UUGameDataSubsystem::IsTwoPlayer()
+{
+	return bTwoPlayer;
+}
+
 void UUGameDataSubsystem::SetTwoPlayer(bool bNewTwoPlayer)
 {
 	bTwoPlayer = bNewTwoPlayer;
