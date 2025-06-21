@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Snake.h"
 #include "GameFramework/GameModeBase.h"
 #include "GameModeSnake.generated.h"
 
@@ -22,7 +23,6 @@ public:
 	bool bIsGodModeEnabled = false;
 	
 	class AArena* Arena;
-
 	UPROPERTY(EditDefaultsOnly, Category = "Arena settings")
 	int32 ArenaWidth;
 	UPROPERTY(EditDefaultsOnly, Category = "Arena settings")
@@ -40,6 +40,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Spawn settings")
 	FVector PlayerSpawnLocation;
+	UPROPERTY(EditDefaultsOnly, Category = "Spawn settings")
+	FVector P2SpawnLocation;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Spawn settings")
 	int32 FoodSpawnRangeX;
@@ -49,6 +51,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Spawn settings")
 	int32 FoodSpawnRangeZ;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Spawn settings")
+	TSubclassOf<class ASnakePlayerController> P2Controller;
+	
 	
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Arena")
@@ -56,9 +62,11 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Food")
 	TSubclassOf<class AFood> FoodClass;
+	UPROPERTY(EditDefaultsOnly, Category = "Snake")
+	TSubclassOf<class ASnake> SnakeClass;
 
-	//UPROPERTY(EditDefaultsOnly, Category = "GameData")
-	//UUGameDataSubsystem* GameSubSys = GetWorld()->GetSubsystem<UUGameDataSubsystem>();
+//	UPROPERTY(EditDefaultsOnly, Category = "GameData")
+//	UUGameDataSubsystem* GameSubSys = GetWorld()->GetSubsystem<UUGameDataSubsystem>();
 
 private:
 	int Score;
@@ -67,7 +75,7 @@ private:
 	
 protected:
 	virtual void StartPlay() override;
-
+	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void BeginPlay() override;
 
 private:
@@ -94,7 +102,4 @@ public:
 	FVector GetBottomPoint() const;
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widgets")
-	TSubclassOf<UUserWidget> MainMenuWidgetClass;
-
 };

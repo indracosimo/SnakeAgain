@@ -51,7 +51,7 @@ void UMainMenu::Start2PGame()
 {
 	//Load level1
 //	StartGame();
-
+	StartGame();
 	if (UGameInstance* GameInstance = GetWorld()->GetGameInstance())
 	{
 		if (UUGameDataSubsystem* GameDataSubsysten = GameInstance->GetSubsystem<UUGameDataSubsystem>())
@@ -61,7 +61,7 @@ void UMainMenu::Start2PGame()
 		}
 	}
 
-	StartGame();
+
 	//with two controllable snakes, one with wasd another with arrow keys
 }
 

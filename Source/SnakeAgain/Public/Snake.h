@@ -16,7 +16,6 @@ class SNAKEAGAIN_API ASnake : public APawn
 public:
 	ASnake();
 
-
 protected:
 	virtual void BeginPlay() override;
 	
@@ -34,6 +33,8 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	class UInputMappingContext* DefaultMappingContext;
+	UPROPERTY(EditDefaultsOnly, Category = "P2 Input")
+	class UInputMappingContext* P2MappingContext;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	class UInputAction* MoveUpAction;

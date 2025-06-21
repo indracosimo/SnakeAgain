@@ -6,12 +6,12 @@
 #include "SnakeAgain/Public/SnakeTail.h"
 
 
+
 // Sets default values
 ASnake::ASnake()
 {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-
 	// set root component
 	RootComp = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
 	SetRootComponent(RootComp);
@@ -64,7 +64,14 @@ void ASnake::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
 		{
-			Subsystem->AddMappingContext(DefaultMappingContext, 0);
+			if (PC->GetLocalPlayer()->GetControllerId() == 0)
+			{
+				Subsystem->AddMappingContext(DefaultMappingContext, 0);
+			}
+			else if (PC->GetLocalPlayer()->GetControllerId() == 1)
+			{
+				Subsystem->AddMappingContext(P2MappingContext, 0);
+			}
 		}
 	}
 }

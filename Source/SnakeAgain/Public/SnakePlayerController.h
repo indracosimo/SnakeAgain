@@ -16,6 +16,8 @@ class SNAKEAGAIN_API ASnakePlayerController : public APlayerController
 
 	UPROPERTY(EditDefaultsOnly, Category = Input)
 	class UInputMappingContext* DefaultMappingContext;
+	UPROPERTY(EditDefaultsOnly, Category = Input)
+	class UInputMappingContext* P2MappingContext;
 
 	UPROPERTY(EditDefaultsOnly, Category = Input)
 	class UInputAction* MoveAction;

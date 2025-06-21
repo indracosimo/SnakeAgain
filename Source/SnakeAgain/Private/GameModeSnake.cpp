@@ -37,10 +37,31 @@ AGameModeSnake::AGameModeSnake()
 void AGameModeSnake::StartPlay()
 {
 	Super::StartPlay();
-	
+
 	SpawnCamera();
 	SpawnArena();
 	SpawnFood();
+	if (GetGameInstance()->GetSubsystem<UUGameDataSubsystem>()->bTwoPlayer)
+	{
+		UGameplayStatics::CreatePlayer(this, 1, true);
+	}
+}
+
+void AGameModeSnake::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+	UE_LOG(LogTemp, Warning, TEXT("PostLogin called for ControllerId: %d"), NewPlayer->GetLocalPlayer()->GetControllerId());
+	FVector SpawnLocation = PlayerSpawnLocation;
+	if (NewPlayer->GetLocalPlayer()->GetControllerId() == 1)
+	{
+		SpawnLocation = P2SpawnLocation;
+	}
+
+	ASnake* NewSnake = GetWorld()->SpawnActor<ASnake>(SnakeClass, SpawnLocation, FRotator::ZeroRotator);
+	if (NewSnake)
+	{
+		NewPlayer->Possess(NewSnake);
+	}
 }
 
 void AGameModeSnake::BeginPlay()
@@ -71,16 +92,23 @@ void AGameModeSnake::BeginPlay()
 
 void AGameModeSnake::SpawnCamera()
 {
-	ACameraActor* PlayerViewCamera = GetWorld()->SpawnActor<ACameraActor>(ACameraActor::StaticClass(), CameraSpawnLocation, CameraSpawnRotation, FActorSpawnParameters());
-	APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
-
-	if (PC)
+	FActorSpawnParameters SpawnParams;
+	ACameraActor* PlayerViewCamera = GetWorld()->SpawnActor<ACameraActor>(
+		ACameraActor::StaticClass(),
+		CameraSpawnLocation,
+		CameraSpawnRotation,
+		SpawnParams
+	);
+	
+	for (int32 i = 0; i < 2; ++i)
 	{
-		PlayerViewCamera->SetOwner(PC);
-		PC->SetViewTarget(PlayerViewCamera);
+		APlayerController* PC = UGameplayStatics::GetPlayerController(this, i);
+		if (PC)
+		{
+			PC->SetViewTarget(PlayerViewCamera);
+		}
 	}
 }
-
 void AGameModeSnake::SpawnArena()
 {
 	FTransform SpawnTransform = FTransform(FRotator(), ArenaSpawnCenter, FVector(ArenaHeight, ArenaWidth, 1));

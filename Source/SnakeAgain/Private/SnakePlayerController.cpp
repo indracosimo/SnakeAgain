@@ -16,6 +16,10 @@ void ASnakePlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	GameHud = Cast<AGameHud>(GetHUD());
+	if (!GameHud)
+	{
+		UE_LOG(LogTemp, Error, TEXT("GameHud is null"));
+	}
 	check(GameHud);
 }
 
