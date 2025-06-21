@@ -62,8 +62,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Food")
 	TSubclassOf<class AFood> FoodClass;
-	UPROPERTY(EditDefaultsOnly, Category = "Snake")
-	TSubclassOf<class ASnake> SnakeClass;
+
 
 //	UPROPERTY(EditDefaultsOnly, Category = "GameData")
 //	UUGameDataSubsystem* GameSubSys = GetWorld()->GetSubsystem<UUGameDataSubsystem>();
@@ -96,7 +95,8 @@ public:
 	void OnSnakeOverlapFood();
 
 	void SpawnFood();
-
+	UPROPERTY(EditDefaultsOnly, Category = "Snake")
+	TSubclassOf<class ASnake> SnakeClass;
 	void GameOver();
 	
 	FVector GetBottomPoint() const;

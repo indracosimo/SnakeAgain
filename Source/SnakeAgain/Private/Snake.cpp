@@ -124,6 +124,7 @@ void ASnake::MoveSnake()
 void ASnake::MoveUp(const FInputActionValue& Value)
 {
 	const float AxisValue = Value.Get<float>();
+	
 	if (AxisValue > 0.0f)
 	{
 		MoveDirection = FVector(1.0f, 0.0f, 0.0f);

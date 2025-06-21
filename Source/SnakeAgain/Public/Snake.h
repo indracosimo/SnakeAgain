@@ -45,7 +45,9 @@ private:
 	UFUNCTION()
 	void MoveSnake();
 
+	UFUNCTION(BlueprintCallable, Category = "Input")
 	void MoveUp(const FInputActionValue& Value);
+	UFUNCTION(BlueprintCallable, Category = "Input")
 	void MoveRight(const FInputActionValue& Value);
 
 

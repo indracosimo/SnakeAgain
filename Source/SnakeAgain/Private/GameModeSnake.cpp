@@ -57,11 +57,18 @@ void AGameModeSnake::PostLogin(APlayerController* NewPlayer)
 	{
 		SpawnLocation = P2SpawnLocation;
 	}
+	else if (NewPlayer->GetLocalPlayer()->GetControllerId() == 0)
+	{
+		SpawnLocation = PlayerSpawnLocation;
+	}
 
 	ASnake* NewSnake = GetWorld()->SpawnActor<ASnake>(SnakeClass, SpawnLocation, FRotator::ZeroRotator);
 	if (NewSnake)
 	{
 		NewPlayer->Possess(NewSnake);
+		NewPlayer->Possess(NewSnake);
+		NewPlayer->SetShowMouseCursor(false);
+		NewPlayer->SetInputMode(FInputModeGameOnly());
 	}
 }
 
