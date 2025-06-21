@@ -16,6 +16,7 @@
 AGameModeSnake::AGameModeSnake()
 {
 	DefaultPawnClass = ASnake::StaticClass();
+	SnakeClass = ASnake::StaticClass();
 	HUDClass = AGameHud::StaticClass();
 	PlayerControllerClass = ASnakePlayerController::StaticClass();
 

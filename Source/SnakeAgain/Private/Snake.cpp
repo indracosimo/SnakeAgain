@@ -70,7 +70,7 @@ void ASnake::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 			}
 			else if (PC->GetLocalPlayer()->GetControllerId() == 1)
 			{
-				Subsystem->AddMappingContext(P2MappingContext, 0);
+				Subsystem->AddMappingContext(P2MappingContext, 1);
 			}
 		}
 	}
