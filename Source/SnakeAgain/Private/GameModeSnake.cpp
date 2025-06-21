@@ -71,22 +71,22 @@ void AGameModeSnake::BeginPlay()
 	//UUGameDataSubsystem*
 	
 //	GameSubSys = GetWorld()->GetSubsystem<UUGameDataSubsystem>();
-	if (MainMenuWidgetClass)
-	{
-		UUserWidget* MenuWidget = CreateWidget<UUserWidget>(GetWorld(), MainMenuWidgetClass);
-		if (MenuWidget)
-		{
-			MenuWidget->AddToViewport();
-			
-			if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
-			{
-				FInputModeUIOnly InputMode;
-				InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-				InputMode.SetWidgetToFocus(MenuWidget->TakeWidget());
-				PlayerController->SetInputMode(InputMode);
-			}
-		}
-	}
+	// if (MainMenuWidgetClass)
+	// {
+	// 	UUserWidget* MenuWidget = CreateWidget<UUserWidget>(GetWorld(), MainMenuWidgetClass);
+	// 	if (MenuWidget)
+	// 	{
+	// 		MenuWidget->AddToViewport();
+	// 		
+	// 		if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
+	// 		{
+	// 			FInputModeUIOnly InputMode;
+	// 			InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+	// 			InputMode.SetWidgetToFocus(MenuWidget->TakeWidget());
+	// 			PlayerController->SetInputMode(InputMode);
+	// 		}
+	// 	}
+	// }
 
 }
 
