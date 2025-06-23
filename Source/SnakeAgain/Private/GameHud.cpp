@@ -4,7 +4,6 @@
 #include "GameHud.h"
 #include "SnakeAgain/Public/GameOver.h"
 #include "SnakeAgain/Public/SnakeWidget.h"
-#include "SnakeAgain/Public/MainMenu.h"
 #include "SnakeAgain/Public/GameModeSnake.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
@@ -18,9 +17,7 @@ void AGameHud::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//CreateSnakeWidget();
-
-	ShowMainMenuWidget();
+	CreateSnakeWidget();
 }
 
 void AGameHud::Tick(float DeltaSeconds)
@@ -89,20 +86,3 @@ void AGameHud::ShowGameOverWidget()
 		}
 	}
 }
-
-void AGameHud::ShowMainMenuWidget()
-{
-	if (MainMenuWidgetClass)
-	{
-		MainMenuWidget = CreateWidget<UMainMenu>(GetWorld(), MainMenuWidgetClass);
-
-		if (MainMenuWidget)
-		{
-			MainMenuWidget->AddToViewport();
-			GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-			MainMenuWidget->SetIsFocusable(true);
-			UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(GetWorld()->GetFirstPlayerController(), MainMenuWidget);
-		}
-	}
-}
-
