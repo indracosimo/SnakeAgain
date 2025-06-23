@@ -62,6 +62,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Food")
 	TSubclassOf<class AFood> FoodClass;
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
+	TSubclassOf<class ASnake> P2SnakeClass;
 
 
 //	UPROPERTY(EditDefaultsOnly, Category = "GameData")

@@ -1,17 +1,17 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "SnakeAgain/Public/SnakePlayerController.h"
+#include "P2_Controller.h"
 #include "SnakeAgain/Public/GameModeSnake.h"
 #include "Kismet/GameplayStatics.h"
 #include "SnakeAgain/Public/GameHud.h"
 
-void ASnakePlayerController::SetupInputComponent()
+void AP2_Controller::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 }
 
-void ASnakePlayerController::BeginPlay()
+void AP2_Controller::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -21,23 +21,14 @@ void ASnakePlayerController::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("GameHud is null"));
 	}
 	check(GameHud);
-	
+
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
-		Subsystem->ClearAllMappings();
-
-		if (GetLocalPlayer()->GetControllerId() == 0)
-		{
-			Subsystem->AddMappingContext(DefaultMappingContext, 0);
-		}
-		else if (GetLocalPlayer()->GetControllerId() == 1)
-		{
-			Subsystem->AddMappingContext(P2MappingContext, 0);
-		}
+		Subsystem->AddMappingContext(P2MappingContext, 1);
 	}
 }
 
-void ASnakePlayerController::ToggleGameOverMenu()
+void AP2_Controller::ToggleGameOverMenu()
 {
 	if (GameHud)
 	{
@@ -45,11 +36,10 @@ void ASnakePlayerController::ToggleGameOverMenu()
 	}
 }
 
-void ASnakePlayerController::ClearScore()
+void AP2_Controller::ClearScore()
 {
 	if (UGameplayStatics::DeleteGameInSlot(FString("SaveSlot1"), 0))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Cleared score successfully!"))
 	}
 }
-

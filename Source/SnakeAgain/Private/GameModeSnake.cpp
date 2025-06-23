@@ -15,7 +15,8 @@
 
 AGameModeSnake::AGameModeSnake()
 {
-	DefaultPawnClass = ASnake::StaticClass();
+	DefaultPawnClass = nullptr;//ASnake::StaticClass();
+	P2SnakeClass = nullptr;
 	SnakeClass = ASnake::StaticClass();
 	HUDClass = AGameHud::StaticClass();
 	PlayerControllerClass = ASnakePlayerController::StaticClass();
@@ -44,58 +45,74 @@ void AGameModeSnake::StartPlay()
 	SpawnFood();
 	if (GetGameInstance()->GetSubsystem<UUGameDataSubsystem>()->bTwoPlayer)
 	{
-		UGameplayStatics::CreatePlayer(this, 1, true);
+		UGameViewportClient* Viewport = GetWorld()->GetGameViewport();
+		if (Viewport && GEngine)
+		{
+
+			APlayerController* SecondController = UGameplayStatics::CreatePlayer(this, 1, true);
+			if (!SecondController)
+			{
+				UE_LOG(LogTemp, Error, TEXT("Failed to create second player lol"));
+			}
+		}
 	}
 }
 
 void AGameModeSnake::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
-	UE_LOG(LogTemp, Warning, TEXT("PostLogin called for ControllerId: %d"), NewPlayer->GetLocalPlayer()->GetControllerId());
-	FVector SpawnLocation = PlayerSpawnLocation;
-	if (NewPlayer->GetLocalPlayer()->GetControllerId() == 1)
-	{
-		SpawnLocation = P2SpawnLocation;
-	}
-	else if (NewPlayer->GetLocalPlayer()->GetControllerId() == 0)
-	{
-		SpawnLocation = PlayerSpawnLocation;
-	}
+	// int32 ControllerId = NewPlayer->GetLocalPlayer()->GetControllerId();
+	// FVector SpawnLocation = (ControllerId == 1) ? P2SpawnLocation : PlayerSpawnLocation;
+	//
+	// ASnake* NewSnake = GetWorld()->SpawnActor<ASnake>(SnakeClass, SpawnLocation, FRotator::ZeroRotator);
+	// if (NewSnake)
+	// {
+	// 	NewPlayer->Possess(NewSnake);
+	// 	NewPlayer->SetShowMouseCursor(false);
+	// 	NewPlayer->SetInputMode(FInputModeGameOnly());
+	// }
 
-	ASnake* NewSnake = GetWorld()->SpawnActor<ASnake>(SnakeClass, SpawnLocation, FRotator::ZeroRotator);
+	int32 ControllerId = NewPlayer->GetLocalPlayer()->GetControllerId();
+	FVector SpawnLocation = (ControllerId == 1) ? P2SpawnLocation : PlayerSpawnLocation;
+	
+	TSubclassOf<ASnake> SpawnClass = (ControllerId == 1 && P2SnakeClass != nullptr) ? P2SnakeClass : SnakeClass;
+
+	ASnake* NewSnake = GetWorld()->SpawnActor<ASnake>(SpawnClass, SpawnLocation, FRotator::ZeroRotator);
 	if (NewSnake)
 	{
-		NewPlayer->Possess(NewSnake);
 		NewPlayer->Possess(NewSnake);
 		NewPlayer->SetShowMouseCursor(false);
 		NewPlayer->SetInputMode(FInputModeGameOnly());
 	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to spawn Snake for Controller %d"), ControllerId);
+	}
+	
+	// UE_LOG(LogTemp, Warning, TEXT("PostLogin called for ControllerId: %d"), NewPlayer->GetLocalPlayer()->GetControllerId());
+	// FVector SpawnLocation = PlayerSpawnLocation;
+	// if (NewPlayer->GetLocalPlayer()->GetControllerId() == 1)
+	// {
+	// 	SpawnLocation = P2SpawnLocation;
+	// }
+	// else if (NewPlayer->GetLocalPlayer()->GetControllerId() == 0)
+	// {
+	// 	SpawnLocation = PlayerSpawnLocation;
+	// }
+	//
+	// ASnake* NewSnake = GetWorld()->SpawnActor<ASnake>(SnakeClass, SpawnLocation, FRotator::ZeroRotator);
+	// if (NewSnake)
+	// {
+	// 	NewPlayer->Possess(NewSnake);
+	// 	NewPlayer->Possess(NewSnake);
+	// 	NewPlayer->SetShowMouseCursor(false);
+	// 	NewPlayer->SetInputMode(FInputModeGameOnly());
+	// }
 }
 
 void AGameModeSnake::BeginPlay()
 {
 	Super::BeginPlay();
-
-	//UUGameDataSubsystem*
-	
-//	GameSubSys = GetWorld()->GetSubsystem<UUGameDataSubsystem>();
-	// if (MainMenuWidgetClass)
-	// {
-	// 	UUserWidget* MenuWidget = CreateWidget<UUserWidget>(GetWorld(), MainMenuWidgetClass);
-	// 	if (MenuWidget)
-	// 	{
-	// 		MenuWidget->AddToViewport();
-	// 		
-	// 		if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
-	// 		{
-	// 			FInputModeUIOnly InputMode;
-	// 			InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-	// 			InputMode.SetWidgetToFocus(MenuWidget->TakeWidget());
-	// 			PlayerController->SetInputMode(InputMode);
-	// 		}
-	// 	}
-	// }
-
 }
 
 void AGameModeSnake::SpawnCamera()
