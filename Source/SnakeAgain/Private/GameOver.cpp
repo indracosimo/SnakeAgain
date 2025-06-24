@@ -36,7 +36,7 @@ class FReply UGameOver::NativeOnKeyDown(const FGeometry& MyGeometry, const FKeyE
 		RestartGame();
 		return FReply::Handled();
 	}
-	else if (InKeyEvent.GetKey() == EKeys::Tab)
+	else if (InKeyEvent.GetKey() == EKeys::Escape)
 	{
 		QuitGame();
 		return FReply::Handled();

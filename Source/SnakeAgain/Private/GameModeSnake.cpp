@@ -2,13 +2,10 @@
 
 
 #include "SnakeAgain/Public/GameModeSnake.h"
-
-#include "UGameDataSubsystem.h"
 #include "SnakeAgain/Public/Snake.h"
 #include "SnakeAgain/Public/Food.h"
 #include "SnakeAgain/Public/Arena.h"
 #include "Kismet/GameplayStatics.h"
-#include "Blueprint/UserWidget.h"
 #include "SnakeAgain/Public/GameHud.h"
 #include "Camera/CameraActor.h"
 #include "SnakeAgain/Public/SnakePlayerController.h"
@@ -42,6 +39,7 @@ void AGameModeSnake::StartPlay()
 	SpawnArena();
 	SpawnFood();
 
+<<<<<<< HEAD
 	if (UUGameDataSubsystem* GameSubSys = GetGameInstance()->GetSubsystem<UUGameDataSubsystem>())
 	{
 		SpawnSnake(0);
@@ -94,6 +92,8 @@ void AGameModeSnake::BeginPlay()
 
 }
 
+=======
+>>>>>>> parent of 733d4c8 (start of main menu)
 void AGameModeSnake::SpawnCamera()
 {
 	ACameraActor* PlayerViewCamera = GetWorld()->SpawnActor<ACameraActor>(ACameraActor::StaticClass(), CameraSpawnLocation, CameraSpawnRotation, FActorSpawnParameters());
